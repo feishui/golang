@@ -1,4 +1,4 @@
-package abspermu
+package main
 
 import (
 	"bufio"
@@ -10,47 +10,82 @@ import (
 )
 
 /*
-10
-10 0
-10 1
-7 0
-10 9
-9 0
-10 3
-8 2
-8 0
-7 0
-10 1
-Expected OutputDownload
-1 2 3 4 5 6 7 8 9 10
-2 1 4 3 6 5 8 7 10 9
-1 2 3 4 5 6 7
--1
-1 2 3 4 5 6 7 8 9
--1
-3 4 1 2 7 8 5 6
-1 2 3 4 5 6 7 8
-1 2 3 4 5 6 7
-2 1 4 3 6 5 8 7 10 9
-*/
+We define  to be a permutation of the first  natural numbers in the range . Let  denote the value at position in permutation  using -based indexing.
 
+ is considered to be an absolute permutation if  holds true for every .
+
+Given  and , print the lexicographically smallest absolute permutation . If no absolute permutation exists, print -1.
+
+For example, let  giving us an array . If we use  based indexing, create a permutation where every . If , we could rearrange them to :
+
+pos[i]	i	|Difference|
+3	1	2
+4	2	2
+1	3	2
+2	4	2
+Function Description
+
+Complete the absolutePermutation function in the editor below. It should return an integer that represents the smallest lexicographically smallest permutation, or  if there is none.
+
+absolutePermutation has the following parameter(s):
+
+n: the upper bound of natural numbers to consider, inclusive
+k: the integer difference between each element and its index
+Input Format
+
+The first line contains an integer , the number of test cases.
+Each of the next  lines contains  space-separated integers,  and .
+
+Constraints
+
+
+1 <= t <= 10
+1 <= n <= 10**5
+0 <= k < n
+
+8
+6 0
+n=6, k=0
+result=[0 1 2 3 4 5]
+6 1
+n=6, k=1
+result=[2 1 4 3 6 5]
+6 2
+n=6, k=2
+result=[]
+6 3
+n=6, k=3
+result=[4 5 6 1 2 3]
+6 4
+n=6, k=4
+result=[]
+6 5
+n=6, k=5
+result=[]
+*/
 // Complete the absolutePermutation function below.
 func absolutePermutation(n int32, k int32) []int32 {
-	result := make([]int32, int(n))
+	size := int(n)
+	result := make([]int32, size)
+	for i := 0; i < size; i++ {
+		result[i] = int32(i + 1)
+	}
 	if k == 0 {
-		for i := 1; i <= int(n); i++ {
-			result[i-1] = int32(i)
-		}
 		return result
-    }
-
-    for i := 0; i < int(n); i++ {
-        d := 1
-        for ; d <= n; d++ {
-            result[i] = 
-        }
-    }
-	return result
+	}
+	if n == 1 {
+		return result[0:0]
+	}
+	i, j := int32(0), int32(0)
+	for ; i <= n-k*2; i = i + k*2 {
+		for j = i; j < i+k; j++ {
+			result[j], result[j+k] = result[j+k], result[j]
+		}
+	}
+	if j+k >= n {
+		return result
+	}
+	return result[0:0]
 }
 
 func main() {
@@ -78,7 +113,9 @@ func main() {
 		checkError(err)
 		k := int32(kTemp)
 
+		fmt.Printf("n=%d, k=%d\n", n, k)
 		result := absolutePermutation(n, k)
+		fmt.Printf("result=%v\n", result)
 
 		for i, resultItem := range result {
 			fmt.Fprintf(writer, "%d", resultItem)
@@ -88,6 +125,9 @@ func main() {
 			}
 		}
 
+		if len(result) == 0 {
+			fmt.Fprintf(writer, "-1")
+		}
 		fmt.Fprintf(writer, "\n")
 	}
 
