@@ -1,4 +1,4 @@
-package main
+package abspermu
 
 import (
 	"bufio"
@@ -42,19 +42,14 @@ func absolutePermutation(n int32, k int32) []int32 {
 			result[i-1] = int32(i)
 		}
 		return result
-	}
-	if (n % 2) != 0 {
-		return []int32{}
-	}
-	if n/2 != k {
-		return []int32{}
-	}
-	for i := 1; i <= int(n)/2; i++ {
-		result[i-1] = n/2 + int32(i)
-	}
-	for i := 1; i <= int(n/2); i++ {
-		result[int(n/2)+i-1] = int32(i)
-	}
+    }
+
+    for i := 0; i < int(n); i++ {
+        d := 1
+        for ; d <= n; d++ {
+            result[i] = 
+        }
+    }
 	return result
 }
 
